@@ -1,11 +1,17 @@
+# Unity generated
 [Ll]ibrary/
 [Tt]emp/
 [Oo]bj/
 [Bb]uild/
 [Bb]uilds/
 [Ll]ogs/
-.vs/
+[Uu]serSettings/
 
+# IDE
+.vs/
+.idea/
+
+# C# project files
 *.csproj
 *.sln
 *.user
@@ -17,5 +23,11 @@
 *.opendb
 *.VC.db
 
+# OS
 .DS_Store
 Thumbs.db
+
+# Tutorial / exports (keep repo lean)
+*.mov
+*.mp4
+*.unitypackage
