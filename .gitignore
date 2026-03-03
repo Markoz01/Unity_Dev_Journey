@@ -10,6 +10,7 @@
 # IDE
 .vs/
 .idea/
+.vscode/
 
 # C# project files
 *.csproj
