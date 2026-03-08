@@ -5,7 +5,10 @@ using UnityEngine;
 public class FollowPlayer : MonoBehaviour
 {
 
-    public Transform player;
+    [SerializeField] Transform player;
+
+    [SerializeField] KeyCode toggleKey;
+
     private Vector3 thirdPersonOffset = new Vector3(0, 5, -10);
 
     private Vector3 firstPersonOffset = new Vector3(0, 3.12f, -0.5f);
@@ -14,7 +17,6 @@ public class FollowPlayer : MonoBehaviour
 
     private Quaternion thirdPersonInitialRotation;
 
-    private float horizontalInput;
 
 
     // Start is called before the first frame update
@@ -26,7 +28,7 @@ public class FollowPlayer : MonoBehaviour
     void Update()
     {
         //Toggle between first-person and third-person view
-        if (Input.GetKeyDown(KeyCode.T))
+        if (Input.GetKeyDown(toggleKey))
         {
             isThirdPerson = !isThirdPerson;
         }
@@ -35,9 +37,6 @@ public class FollowPlayer : MonoBehaviour
     // Update is called once per frame
     void LateUpdate()
     {
-
-        //Get horizontal input for camera rotation
-        horizontalInput = Input.GetAxis("Horizontal");
 
         //Follow the player's position
         if(isThirdPerson)
