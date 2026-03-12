@@ -12,6 +12,7 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] private float xRange = 10.0f;
 
+    [SerializeField] private GameObject foodPrefab;
 
     // Start is called before the first frame update
     void Start()
@@ -35,5 +36,12 @@ public class PlayerController : MonoBehaviour
 
         horizontalInput = Input.GetAxis("Horizontal");
         transform.Translate(Vector3.right * horizontalInput * Time.deltaTime * speed);
+
+
+        if(Input.GetKeyDown(KeyCode.Q))
+        {
+            Instantiate(foodPrefab, transform.position, foodPrefab.transform.rotation);
+        }
+
     }
 }
