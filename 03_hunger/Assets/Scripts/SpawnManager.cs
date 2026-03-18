@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class SpawnManager : MonoBehaviour
@@ -7,31 +5,43 @@ public class SpawnManager : MonoBehaviour
 
     [SerializeField] private GameObject[] animalPrefabs;
 
-    private float spawnRangeX = 20;
-    private float spawnPosZ = 20;
+    [Header("Top Spawn")]
+    [SerializeField] private float spawnTopRangeX = 20f;
+    [SerializeField] private float spawnTopPosZ = 20f;
 
-    private float startDelay = 2;
-    private float spawnDelay = 1.5f;
+    [Header("Side Spawn")]
+    [SerializeField] private float spawnSidesTopRangeZ = 16f;
+    [SerializeField] private float spawnSidesBottomPosZ = -2f;
+    [SerializeField] private float sideSpawnX = 22f;
+
+    [Header("Spawn Timing")]
+    [SerializeField] private float startDelay = 2f;
+    [SerializeField] private float spawnDelay = 1.5f;
 
     // Start is called before the first frame update
     void Start()
     {
-        InvokeRepeating("SpawnRandomAnimal", startDelay, spawnDelay);
+        InvokeRepeating(nameof(SpawnRandomAnimals), startDelay, spawnDelay);
     }
 
-    // Update is called once per frame
-    void Update()
+    private void SpawnRandomAnimals()
     {
-    
+        // Generate random spawn positions for the top and sides
+        Vector3 spawnTopPos = new Vector3(Random.Range(-spawnTopRangeX, spawnTopRangeX), 0f, spawnTopPosZ);
+        Vector3 spawnLeftPos = new Vector3(-sideSpawnX, 0f, Random.Range(spawnSidesBottomPosZ, spawnSidesTopRangeZ));
+        Vector3 spawnRightPos = new Vector3(sideSpawnX, 0f, Random.Range(spawnSidesBottomPosZ, spawnSidesTopRangeZ));
+
+        // Spawn animals at the generated positions with appropriate rotations
+        SpawnAnimal(spawnTopPos, Quaternion.Euler(0f, 180f, 0f));
+        SpawnAnimal(spawnLeftPos, Quaternion.Euler(0f, 90f, 0f));
+        SpawnAnimal(spawnRightPos, Quaternion.Euler(0f, 270f, 0f));
     }
 
-    // Spawn a random animal at a random location
-    void SpawnRandomAnimal()
+    // Helper method to spawn an animal at a given position and rotation    
+    private void SpawnAnimal(Vector3 position, Quaternion rotation)
     {
-        int animalIndex = Random.Range(0, animalPrefabs.Length);
-        Vector3 spawnPos =  new Vector3(Random.Range(-spawnRangeX,spawnRangeX), 0, spawnPosZ);
-            
-        Instantiate(animalPrefabs[animalIndex],spawnPos, animalPrefabs[animalIndex].transform.rotation);
+        int randomIndex = Random.Range(0, animalPrefabs.Length);
+        Instantiate(animalPrefabs[randomIndex], position, rotation);
     }
 
 }

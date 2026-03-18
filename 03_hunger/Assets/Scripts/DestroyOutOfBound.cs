@@ -1,30 +1,24 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class DestroyOutOfBound : MonoBehaviour
+public class DestroyOutOfBounds : MonoBehaviour
 {
-    private float topBound = 30.0f;
+    private float topBound = 30f;
+    private float lowerBound = -10f;
+    private float sideBound = 25f;
 
-    private float lowerBound = -10.0f;
-
-    // Start is called before the first frame update
-    void Start()
+    private void Update()
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        // Destroy the object if it goes out of bounds
-        if(transform.position.z > topBound)
+        if (IsOutOfBounds())
         {
-            Destroy(gameObject);
-        } else if (transform.position.z < lowerBound)
-        {
-            Debug.Log("Game Over!");
             Destroy(gameObject);
         }
+    }
+
+    private bool IsOutOfBounds()
+    {
+        return transform.position.z > topBound ||
+               transform.position.z < lowerBound ||
+               transform.position.x > sideBound ||
+               transform.position.x < -sideBound;
     }
 }
