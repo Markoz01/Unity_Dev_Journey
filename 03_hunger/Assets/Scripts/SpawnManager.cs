@@ -18,7 +18,7 @@ public class SpawnManager : MonoBehaviour
     [SerializeField] private float startDelay = 2f;
     [SerializeField] private float spawnDelay = 1.5f;
 
-    // Start is called before the first frame update
+ 
     void Start()
     {
         InvokeRepeating(nameof(SpawnRandomAnimals), startDelay, spawnDelay);
