@@ -5,19 +5,33 @@ using UnityEngine;
 public class Cube : MonoBehaviour
 {
     public MeshRenderer Renderer;
-    
+
+    [SerializeField] private float _rotationX = 0.0f;
+    [SerializeField] private float _rotationY = 0.0f;
+    [SerializeField] private float _rotationZ = 0.0f;
+
+    // Array of colors to choose from
+    private Color[] _colors = new Color[]
+    {
+        Color.red,
+        Color.green,
+        Color.blue,
+        Color.yellow,
+        Color.cyan
+    };
+
     void Start()
     {
-        transform.position = new Vector3(3, 4, 1);
-        transform.localScale = Vector3.one * 1.3f;
-        
         Material material = Renderer.material;
         
-        material.color = new Color(0.5f, 1.0f, 0.3f, 0.4f);
+        material.color = _colors[Random.Range(0, _colors.Length)];
     }
     
     void Update()
     {
-        transform.Rotate(10.0f * Time.deltaTime, 0.0f, 0.0f);
+        transform.Rotate(_rotationX * Time.deltaTime, _rotationY * Time.deltaTime, _rotationZ * Time.deltaTime);
     }
+
+
+
 }
