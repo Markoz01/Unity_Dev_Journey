@@ -10,6 +10,8 @@ public class Cube : MonoBehaviour
     [SerializeField] private float _rotationY = 0.0f;
     [SerializeField] private float _rotationZ = 0.0f;
 
+    private Material _material;
+
     // Array of colors to choose from
     private Color[] _colors = new Color[]
     {
@@ -22,16 +24,25 @@ public class Cube : MonoBehaviour
 
     void Start()
     {
-        Material material = Renderer.material;
+        _material = Renderer.material;
         
-        material.color = _colors[Random.Range(0, _colors.Length)];
+        SetRandomColor();
     }
     
     void Update()
     {
         transform.Rotate(_rotationX * Time.deltaTime, _rotationY * Time.deltaTime, _rotationZ * Time.deltaTime);
+
+        if(Input.GetKeyDown(KeyCode.Space))
+        {
+            SetRandomColor();
+        }
+
     }
 
-
+    private void SetRandomColor()
+    {
+        _material.color = _colors[Random.Range(0, _colors.Length)];
+    }
 
 }
