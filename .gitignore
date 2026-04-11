@@ -32,3 +32,8 @@ Thumbs.db
 *.mov
 *.mp4
 *.unitypackage
+
+# WebGL Builds
+**/WebGL Builds/
+**/connectwebgl.zip
+**/webgl_sharing
