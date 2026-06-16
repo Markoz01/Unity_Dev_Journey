@@ -1,0 +1,23 @@
+# Unity asset files - exclude from language statistics
+*.asset linguist-vendored
+*.unity linguist-vendored
+*.prefab linguist-vendored
+*.mat linguist-vendored
+*.meta linguist-vendored
+*.controller linguist-vendored
+*.anim linguist-vendored
+*.mixer linguist-vendored
+*.overrideController linguist-vendored
+*.physicMaterial linguist-vendored
+*.physicsMaterial2D linguist-vendored
+*.playable linguist-vendored
+*.mask linguist-vendored
+*.brush linguist-vendored
+*.flare linguist-vendored
+*.fontsettings linguist-vendored
+*.guiskin linguist-vendored
+*.inputactions linguist-vendored
+*.renderTexture linguist-vendored
+*.spriteatlas linguist-vendored
+*.terrainlayer linguist-vendored
+*.shadervariants linguist-vendored
