@@ -15,6 +15,7 @@
 # C# project files
 *.csproj
 *.sln
+*.slnx
 *.user
 *.pidb
 *.booproj
