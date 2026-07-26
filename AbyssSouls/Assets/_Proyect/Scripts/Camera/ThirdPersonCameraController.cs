@@ -51,7 +51,7 @@ public class ThirdPersonCameraController : MonoBehaviour
 
         Quaternion rotation = Quaternion.Euler(pitch, yaw, 0f);
 
-        transform.position = (rotation * -Vector3.forward) * distance + target.position;
+        transform.position = rotation * -Vector3.forward * distance + target.position;
         transform.rotation = rotation;
     }
 
