@@ -2,53 +2,65 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    [Header("Movement Settings")]
-    [SerializeField] float moveSpeed = 5f;
-    [SerializeField] float gravity = -20f;
-    [SerializeField] float rotationSpeed = 10f;
-
+    private PlayerControls controls;
     private CharacterController controller;
-    private Vector3 velocity;
 
-    void Start()
+    [SerializeField] Transform cameraTransform;
+
+    [SerializeField] float moveSpeed = 5f;
+    [SerializeField] float rotationSpeed = 720f;
+    [SerializeField] float gravity = -20f;
+    private float verticalVelocity;
+
+
+    private void Awake()
     {
+        controls = new PlayerControls();
         controller = GetComponent<CharacterController>();
     }
 
-    void Update()
+    private void OnEnable()
     {
-        HandleMovement();
-        ApplyGravity();
+        controls.Enable();
     }
 
-    void HandleMovement()
+    private void OnDisable()
     {
-        float horizontalInput = Input.GetAxis("Horizontal");
-        float verticalInput = Input.GetAxis("Vertical");
-
-        Vector3 inputDirection = new Vector3(horizontalInput, 0f, verticalInput).normalized;
-
-        if (inputDirection.magnitude >= 0.1f)
-        {
-            // Rotate the player to face movement direction
-            float targetAngle = Mathf.Atan2(inputDirection.x, inputDirection.z) * Mathf.Rad2Deg;
-            Quaternion targetRotation = Quaternion.Euler(0f, targetAngle, 0f);
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
-
-            // Move in that direction
-            Vector3 moveDirection = inputDirection * moveSpeed;
-            controller.Move(moveDirection * Time.deltaTime);
-        }
+        controls.Disable();
     }
 
-    void ApplyGravity()
+    private void Update()
     {
-        if (controller.isGrounded && velocity.y < 0)
+        Vector2 input = controls.Player.Move.ReadValue<Vector2>();
+
+        Vector3 camForward = cameraTransform.forward;
+        camForward.y = 0f;
+        camForward.Normalize();
+
+        Vector3 camRight = cameraTransform.right;
+        camRight.y = 0f;
+        camRight.Normalize();
+
+        Vector3 direction = camForward * input.y + camRight * input.x;
+
+        if(direction.sqrMagnitude > 0.0001f)
         {
-            velocity.y = -2f; // small negative value keeps player grounded
+            Quaternion targetRotation = Quaternion.LookRotation(direction);
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
         }
 
-        velocity.y += gravity * Time.deltaTime;
-        controller.Move(velocity * Time.deltaTime);
+        if(controller.isGrounded)
+        {
+            verticalVelocity = -2f;
+        }
+        else
+        {
+            verticalVelocity += gravity * Time.deltaTime;
+        }
+        
+        Vector3 totalMove = direction * moveSpeed + Vector3.up * verticalVelocity;
+        controller.Move(totalMove * Time.deltaTime);
+
     }
+
 }
