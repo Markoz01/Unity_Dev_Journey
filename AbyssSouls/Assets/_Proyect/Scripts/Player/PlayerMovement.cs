@@ -18,22 +18,14 @@ public class PlayerMovement : MonoBehaviour
 
     private PlayerControls controls;
     private CharacterController controller;
+    private PlayerStateController stateController;
     private float verticalVelocity;
 
-    private void Awake()
+    private void Start()
     {
-        controls = new PlayerControls();
+        controls = GetComponent<InputReader>().Controls;
         controller = GetComponent<CharacterController>();
-    }
-
-    private void OnEnable()
-    {
-        controls.Enable();
-    }
-
-    private void OnDisable()
-    {
-        controls.Disable();
+        stateController = GetComponent<PlayerStateController>();
     }
 
     private void Update()
@@ -50,9 +42,12 @@ public class PlayerMovement : MonoBehaviour
 
         Vector3 direction = camForward * moveInput.y + camRight * moveInput.x;
 
-        HandleRotation(direction);
-        HandleGravityAndJump();
-        HandleMove(direction);
+        if (stateController.CanMove)
+        {
+            HandleRotation(direction);
+            HandleGravityAndJump();
+            HandleMove(direction);
+        }
     }
 
     private void HandleRotation(Vector3 direction)
