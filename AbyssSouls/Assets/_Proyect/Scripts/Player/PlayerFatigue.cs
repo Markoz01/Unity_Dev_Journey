@@ -7,7 +7,14 @@ public class PlayerFatigue : MonoBehaviour
     [SerializeField] private float decayDelay = 1f;
     [SerializeField] private float decayRate = 5f;
 
+    [Header("Fatigue Tier Thresholds")]
+    [SerializeField] private float tier1FatigueThreshold = 70f;
+    [SerializeField] private float tier2FatigueThreshold = 90f;
+
     public float CurrentFatigue { get; private set; }
+    public bool IsExhausted { get; private set; }
+    public float Tier1Threshold => tier1FatigueThreshold;
+    public float Tier2Threshold => tier2FatigueThreshold;
 
     private PlayerStateController stateController;
     private float timeSinceLastAction;
@@ -37,10 +44,24 @@ public class PlayerFatigue : MonoBehaviour
     public void IncreaseFatigue(float amount)
     {
         CurrentFatigue = Mathf.Clamp(CurrentFatigue + amount, 0f, maxFatigue);
+        UpdateExhaustionState();
     }
 
     private void DecreaseFatigue(float amount)
     {
         CurrentFatigue = Mathf.Clamp(CurrentFatigue - amount, 0f, maxFatigue);
+        UpdateExhaustionState();
+    }
+
+    private void UpdateExhaustionState()
+    {
+        if (CurrentFatigue >= maxFatigue)
+        {
+            IsExhausted = true;
+        }
+        else if (CurrentFatigue < tier1FatigueThreshold)
+        {
+            IsExhausted = false;
+        }
     }
 }

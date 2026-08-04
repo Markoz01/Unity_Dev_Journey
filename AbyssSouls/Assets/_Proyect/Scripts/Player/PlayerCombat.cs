@@ -6,6 +6,10 @@ public class PlayerCombat : MonoBehaviour
     [SerializeField] private float attackDuration = 1.0f;
     [SerializeField] private float attackFatigueCost = 10f;
 
+    [Header("Fatigue Penalty Tiers")]
+    [SerializeField] private float tier1SpeedMultiplier = 0.7f;
+    [SerializeField] private float tier2SpeedMultiplier = 0.5f;
+
     private PlayerControls controls;
     private PlayerStateController stateController;
     private PlayerFatigue playerFatigue;
@@ -20,7 +24,7 @@ public class PlayerCombat : MonoBehaviour
 
     private void Update()
     {
-        if (controls.Player.Attack.WasPressedThisFrame() && stateController.CurrentState == PlayerStateController.ActionState.Free)
+        if (controls.Player.Attack.WasPressedThisFrame() && stateController.CurrentState == PlayerStateController.ActionState.Free && !playerFatigue.IsExhausted)
         {
             stateController.SetState(PlayerStateController.ActionState.Attacking);
             playerFatigue.IncreaseFatigue(attackFatigueCost);
@@ -29,11 +33,27 @@ public class PlayerCombat : MonoBehaviour
 
         if (stateController.CurrentState == PlayerStateController.ActionState.Attacking)
         {
-            attackTimer += Time.deltaTime;
+            attackTimer += Time.deltaTime * GetFatigueSpeedMultiplier();
             if (attackTimer >= attackDuration)
             {
                 stateController.SetState(PlayerStateController.ActionState.Free);
             }
         }
+    }
+
+    private float GetFatigueSpeedMultiplier()
+    {
+        if (playerFatigue.CurrentFatigue >= playerFatigue.Tier2Threshold)
+        {
+            return tier2SpeedMultiplier;
+        }
+
+        if (playerFatigue.CurrentFatigue >= playerFatigue.Tier1Threshold)
+        {
+            Debug.Log("Tier 1 fatigue penalty applied.");
+            return tier1SpeedMultiplier;
+        }
+
+        return 1f;
     }
 }
