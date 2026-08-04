@@ -2,23 +2,20 @@ using UnityEngine;
 
 public class InputReader : MonoBehaviour
 {
-
     public PlayerControls Controls { get; private set; }
 
-
-    void Awake()
+    private void Awake()
     {
         Controls = new PlayerControls();
     }
 
-    void OnEnable()
+    private void OnEnable()
     {
         Controls.Enable();
     }
 
-    void OnDisable()
+    private void OnDisable()
     {
         Controls.Disable();
     }
-
 }
